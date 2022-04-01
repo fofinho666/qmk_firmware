@@ -1,6 +1,7 @@
 EXTRAKEY_ENABLE = yes
 ENCODER_ENABLE = yes
 LTO_ENABLE = yes	   # significantly reduce the compiled size, but disable the legacy TMK Macros and Functions features
+OLED_ENABLE= yes  
 
 SRC += games/screen.c \
        games/xorshift.c \

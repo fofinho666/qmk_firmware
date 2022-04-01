@@ -69,9 +69,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |BackSP|
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  |      |      |      |      |      |                    |   {  |   }  |   %  |   /  |   -  |  |>  |
+ * | Tab  |      |      |      |      |      |                    |   (  |  )  |   %  |   /  |   -  |  |>  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |LShift|      |      |      |      |      |-------.    ,-------|   (  |   )  |   &  |   *  |   +  |   ^  |
+ * |LShift|      |      |      |      |      |-------.    ,-------|   {  |   }  |   &  |   *  |   +  |   ^  |
  * |------+------+------+------+------+------| Play  |    |   -   |------+------+------+------+------+------|
  * |LCTRL |   ~  |      |      |      |      |-------|    |-------|   [  |   ]  |   |  |  =>  |   =  |Enter |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -83,8 +83,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_LOWER] = LAYOUT(
   _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_LCBR, KC_RCBR, KC_PERC, KC_SLSH, KC_MINS, EX_PIPE,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_LPRN, KC_RPRN, KC_AMPR, KC_ASTR, KC_PLUS, KC_CIRC,
+  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_LPRN, KC_RPRN, KC_PERC, KC_SLSH, KC_MINS, EX_PIPE,
+  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_LCBR, KC_RCBR, KC_AMPR, KC_ASTR, KC_PLUS, KC_CIRC,
   _______, KC_TILD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  _______, XXXXXXX, KC_LBRC, KC_RBRC, KC_PIPE, N_ARROW, KC_EQL, _______,
                              _______, _______, _______,  _______, _______,  _______, _______, _______
 ),
@@ -158,7 +158,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-#ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (!is_keyboard_master())
@@ -253,7 +253,7 @@ void update_log(void) {
     }
 }
 
-void oled_task_user(void) {
+bool oled_task_user(void) {
     if (is_keyboard_master()) {
         if (IS_LAYER_ON(_TETRIS)) {
             tetris_run();
@@ -266,6 +266,7 @@ void oled_task_user(void) {
     } else {
         render_lily58_logo();
     }
+    return false;
 }
 void tetris_play(uint16_t keycode) {
     switch (keycode) {
@@ -312,7 +313,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Rotary encoder related code
 #ifdef ENCODER_ENABLE
-void encoder_update_user(uint8_t index, bool clockwise) {
+bool encoder_update_user(uint8_t index, bool clockwise) {
   if (index == 0) { // Encoder on master side
     if(IS_LAYER_ON(_RAISE)) { // on Raise layer
       // Cursor control
@@ -347,5 +348,6 @@ void encoder_update_user(uint8_t index, bool clockwise) {
       }
     }
   }
+  return false;
 }
 #endif
