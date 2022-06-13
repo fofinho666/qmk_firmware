@@ -29,5 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENCODERS_PAD_A { F4 }
 #define ENCODERS_PAD_B { F5 }
 
-#define SPLIT_USB_DETECT
-#define SPLIT_USB_TIMEOUT 1500
+// If you are flashing the slave side, uncomment the lines below:
+// #define SPLIT_USB_DETECT
+// #define NO_USB_STARTUP_CHECK
